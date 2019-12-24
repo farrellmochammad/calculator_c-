@@ -9,9 +9,9 @@
 
     <br />
 
-    <asp:Button ID="Button1" runat="server" Text="1" Height="36px" Width="41px" OnClick="Button_Click"/>
-    <asp:Button ID="Button2" runat="server" Text="2" Height="36px" Width="41px" OnClick="Button_Click"/>
-    <asp:Button ID="Button3" runat="server" Text="3" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button7" runat="server" Text="7" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button8" runat="server" Text="8" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button9" runat="server" Text="9" Height="36px" Width="41px" OnClick="Button_Click"/>
     <asp:Button ID="Button_plus" runat="server" Text="+" Height="36px" Width="41px" OnClick="Operator_Click"/>
 
     <br />
@@ -25,23 +25,26 @@
     <br />
     <br />
 
-    <asp:Button ID="Button7" runat="server" Text="7" Height="36px" Width="41px" OnClick="Button_Click"/>
-    <asp:Button ID="Button8" runat="server" Text="8" Height="36px" Width="41px" OnClick="Button_Click"/>
-    <asp:Button ID="Button9" runat="server" Text="9" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button1" runat="server" Text="1" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button2" runat="server" Text="2" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button3" runat="server" Text="3" Height="36px" Width="41px" OnClick="Button_Click"/>
     <asp:Button ID="Button_multiplier" runat="server" Text="x" Height="36px" Width="41px" OnClick="Operator_Click"/>
 
     <br />
     <br />
 
-    <asp:Button ID="Button_c" runat="server" Text="C" Height="36px" Width="41px" OnClick="Clear_Click"/>
     <asp:Button ID="Button0" runat="server" Text="0" Height="36px" Width="41px" OnClick="Button_Click"/>
-    <asp:Button ID="Button_equal" runat="server" Text="=" Height="36px" Width="41px" OnClick="Equal_Click"/>
+    <asp:Button ID="Button_br_open" runat="server" Text="(" Height="36px" Width="41px" OnClick="Button_Click"/>
+    <asp:Button ID="Button_br_closed" runat="server" Text=")" Height="36px" Width="41px" OnClick="Button_Click"/>
     <asp:Button ID="Button_divide" runat="server" Text="/" Height="36px" Width="41px"  OnClick="Operator_Click"/>
 
     <br />
     <br />
 
+    <asp:Button ID="Button_c" runat="server" Text="C" Height="36px" Width="41px" OnClick="Clear_Click"/>
     <asp:Button ID="Button_CE" runat="server" Text="CE" Height="36px" Width="41px" OnClick="Clear_Click"/>
+    <asp:Button ID="Button_equal" runat="server" Text="Enter" Height="36px" Width="82" OnClick="Equal_Click"/>
+
 
 
 

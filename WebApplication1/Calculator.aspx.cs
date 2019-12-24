@@ -20,9 +20,26 @@ namespace WebApplication1
         protected void Button_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            if (result.Text == "0") {
+            if (result.Text == "0")
+            {
                 result.Text = b.Text;
-            } else {
+            }
+            else if (b.Text == "(")
+            {
+                if (isOperator(result.Text[result.Text.Length - 1]))
+                {
+                    result.Text += b.Text;
+                }
+            }
+            else if (b.Text == ")")
+            {
+                if (!isOperator(result.Text[result.Text.Length - 1]))
+                {
+                    result.Text += b.Text;
+                }
+            }
+            else
+            {
                 result.Text += b.Text;
             }
         }
@@ -31,32 +48,28 @@ namespace WebApplication1
         {
             Button b = (Button)sender;
 
-            char lastNum = result.Text[result.Text.Length-1];
+            char lastNum = result.Text[result.Text.Length - 1];
 
-            if (result.Text != "0" & isOperator(lastNum) != true )
+            if (result.Text != "0" & isOperator(lastNum) != true)
             {
                 if (b.Text == "x")
                 {
-                  result.Text += "*";
-                } else
+                    result.Text += "*";
+                }
+                else
                 {
-                  result.Text += b.Text;
+                    result.Text += b.Text;
                 }
             }
         }
 
         protected void Equal_Click(object sender, EventArgs e)
-        { 
+        {
             char lastNum = result.Text[result.Text.Length - 1];
 
-            if ( isOperator(lastNum) != true )
+            if (isOperator(lastNum) != true)
             {
-                float[] results = Regex.Split(result.Text, @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
-
-                string[] operations = Regex.Split(result.Text, @"[0-9]+").ToArray();
-                
-                result.Text = countValue(operations, results).ToString(); 
-
+                detectBracket(result.Text);
             }
         }
 
@@ -76,14 +89,14 @@ namespace WebApplication1
             }
 
 
-            while ( countMulDiv(arrOperation) != 0 )
+            while (countMulDiv(arrOperation) != 0)
             {
                 for (int i = 0; i < arrOperation.Length; i++)
                 {
                     if (arrOperation[i] == "*")
                     {
                         arrResult[i] = arrResult[i] * arrResult[i + 1];
-                        arrResult = arrResult.Where((source, index) => index != i+1).ToArray();
+                        arrResult = arrResult.Where((source, index) => index != i + 1).ToArray();
                         arrOperation = arrOperation.Where((source, index) => index != i).ToArray();
                     }
                     else if (arrOperation[i] == "/")
@@ -124,9 +137,11 @@ namespace WebApplication1
 
         public bool isOperator(char x)
         {
-            if (x == '+' | x == '-' | x == '*' | x== '/') {
+            if (x == '+' | x == '-' | x == '*' | x == '/')
+            {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -162,7 +177,94 @@ namespace WebApplication1
 
         }
 
+        public void detectBracket(string text)
+        {
+            int[] stack = new int[] { };
+            bool isBracket = false;
+            foreach (var tx in text)
+            {
+                if (tx == '(')
+                {
+                    stack = stack.Concat(new int[] { 1 }).ToArray();
+                    isBracket = true;
+
+                }
+                else if (tx == ')')
+                {
+                    isBracket = true;
+                    if (stack.Length == 0)
+                    {
+                        stack = stack.Concat(new int[] { 1 }).ToArray();
+                    }
+                    else
+                    {
+                        stack = stack.Where((source, index) => index != stack.Length - 1).ToArray();
+                    }
+                }
+            }
+
+            if (stack.Length != 0 && isBracket)
+            {
+                result.Text = "Error";
+
+            } else if (isBracket)
+            {
+                fragBracket(result.Text);
+            }
+            else
+            {
+                float[] results = Regex.Split(result.Text, @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+                string[] operations = Regex.Split(result.Text, @"[0-9]+").ToArray();
+
+                result.Text = countValue(operations, results).ToString();
+            }
+        }
+
+        public void fragBracket(string text)
+        {
+            int[] stack = new int[] { };
+            string[] arrbrackets = new string[] { };
+
+
+            foreach (var tx in text)
+            {
+                if (stack.Length != 0)
+                {
+                    arrbrackets[stack.Length-1] += tx;
+                } else
+                {
+                    arrbrackets[0] += tx;
+                }
+
+                if (tx == '(')
+                {
+                    stack = stack.Concat(new int[] { 1 }).ToArray();
+                    arrbrackets = arrbrackets.Concat(new String[] { "" }).ToArray();
+                }
+                else if (tx == ')')
+                {
+                    if (stack.Length == 0)
+                    {
+                        stack = stack.Concat(new int[] { 1 }).ToArray();
+                    }
+                    else
+                    {
+                        stack = stack.Where((source, index) => index != stack.Length - 1).ToArray();
+                    }
+                }
+            }
+
+            foreach (var st in arrbrackets)
+            {
+                System.Diagnostics.Debug.WriteLine("SomeText" + st);
+            }
+        }
+
+
+
+
     }
-
-
 }
+
+

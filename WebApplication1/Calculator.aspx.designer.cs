@@ -24,31 +24,31 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.TextBox result;
 
         /// <summary>
-        /// Button1 control.
+        /// Button7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button Button7;
 
         /// <summary>
-        /// Button2 control.
+        /// Button8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.Button Button8;
 
         /// <summary>
-        /// Button3 control.
+        /// Button9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button3;
+        protected global::System.Web.UI.WebControls.Button Button9;
 
         /// <summary>
         /// Button_plus control.
@@ -96,31 +96,31 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button Button_minus;
 
         /// <summary>
-        /// Button7 control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button7;
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// Button8 control.
+        /// Button2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button8;
+        protected global::System.Web.UI.WebControls.Button Button2;
 
         /// <summary>
-        /// Button9 control.
+        /// Button3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button9;
+        protected global::System.Web.UI.WebControls.Button Button3;
 
         /// <summary>
         /// Button_multiplier control.
@@ -132,15 +132,6 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button Button_multiplier;
 
         /// <summary>
-        /// Button_c control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_c;
-
-        /// <summary>
         /// Button0 control.
         /// </summary>
         /// <remarks>
@@ -150,13 +141,22 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button Button0;
 
         /// <summary>
-        /// Button_equal control.
+        /// Button_br_open control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_equal;
+        protected global::System.Web.UI.WebControls.Button Button_br_open;
+
+        /// <summary>
+        /// Button_br_closed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button_br_closed;
 
         /// <summary>
         /// Button_divide control.
@@ -168,6 +168,15 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button Button_divide;
 
         /// <summary>
+        /// Button_c control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button_c;
+
+        /// <summary>
         /// Button_CE control.
         /// </summary>
         /// <remarks>
@@ -175,5 +184,14 @@ namespace WebApplication1
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button_CE;
+
+        /// <summary>
+        /// Button_equal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button_equal;
     }
 }
