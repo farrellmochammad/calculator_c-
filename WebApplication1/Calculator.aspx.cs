@@ -224,15 +224,16 @@ namespace WebApplication1
         public void fragBracket(string text)
         {
             int[] stack = new int[] { };
-            string[] arrbrackets = new string[] { };
+            string[] arrbrackets = new string[] { "" };
+            int idx = 0;
 
 
             foreach (var tx in text)
             {
                 if (stack.Length != 0)
                 {
-                    arrbrackets[stack.Length-1] += tx;
-                } else
+                    arrbrackets[idx] += tx;
+                } else if (stack.Length == 0)
                 {
                     arrbrackets[0] += tx;
                 }
@@ -240,6 +241,7 @@ namespace WebApplication1
                 if (tx == '(')
                 {
                     stack = stack.Concat(new int[] { 1 }).ToArray();
+                    idx += 1;
                     arrbrackets = arrbrackets.Concat(new String[] { "" }).ToArray();
                 }
                 else if (tx == ')')
@@ -255,15 +257,67 @@ namespace WebApplication1
                 }
             }
 
+            char[] charsToRemove = { '(', ')' };
+            string[] removeNoise = new string[] { };
+            string temp = "";
+
             foreach (var st in arrbrackets)
             {
-                System.Diagnostics.Debug.WriteLine("SomeText" + st);
+                removeNoise = removeNoise.Concat(new String[] { st.TrimEnd(charsToRemove) }).ToArray();
             }
+
+
+            int[] indexes = new int[] { };
+            char[] operationsindex = new char[] { };
+            for (int i = 0; i <= removeNoise.Length-1; i++)
+            {
+                for (int j=0; j<=removeNoise[i].Length-1; j++)
+                {
+                    if (removeNoise[i][j] == '(')
+                    {
+                        if (removeNoise[i][j+1] == '*' | removeNoise[i][j+1] == '/')
+                        {
+                            removeNoise[i] = removeNoise[i].Replace('(', '1');
+                        }
+                        else
+                        {
+                            removeNoise[i] = removeNoise[i].Replace('(', '0');
+                        }
+                        indexes = indexes.Concat(new int[] { i + 1 }).ToArray();
+                        operationsindex = operationsindex.Concat(new char[] { (removeNoise[i][j+1]) }).ToArray();
+                    }
+                }
+            }
+
+            if (indexes.Length != 0)
+            {
+                for (int i=0; i<=indexes.Length-1; i++)
+                {
+                    removeNoise[indexes[i]] += operationsindex[i];
+                }
+            }
+            
+
+            float summary = 0;
+            for (int i = removeNoise.Length-1; i >= 0; i--)
+            {
+                if (i != removeNoise.Length - 1)
+                {
+                    removeNoise[i] += summary.ToString();
+                }
+
+                float[] results = Regex.Split(removeNoise[i], @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+                string[] operations = Regex.Split(removeNoise[i], @"[0-9]+").ToArray();
+
+                summary = countValue(operations, results);
+
+            }
+
+            result.Text = summary.ToString();
+
+
         }
-
-
-
-
     }
 }
 
