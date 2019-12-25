@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace WebApplication1
 {
@@ -147,6 +148,21 @@ namespace WebApplication1
             }
         }
 
+        public bool isDoubleOperator(string x)
+        {
+            bool stat = false;
+            for (int i=0; i<=x.Length-2; i++)
+            {
+                if (isOperator(x[i]) & isOperator(x[i+1]))
+                {
+                    stat = true;
+                }
+            }
+
+            return stat;
+        }
+
+
         public int countMulDiv(string[] arrOperation)
         {
             int count = 0;
@@ -225,26 +241,33 @@ namespace WebApplication1
         {
             int[] stack = new int[] { };
             string[] arrbrackets = new string[] { "" };
+            char[] arrIdxOperations = new char[] { };
             int idx = 0;
 
 
-            foreach (var tx in text)
+            for (int i = 0; i <= text.Length - 1; i++)
             {
                 if (stack.Length != 0)
                 {
-                    arrbrackets[idx] += tx;
+                    arrbrackets[idx] += text[i];
                 } else if (stack.Length == 0)
                 {
-                    arrbrackets[0] += tx;
+                    arrbrackets[0] += text[i];
                 }
 
-                if (tx == '(')
+                if (text[i] == '(')
                 {
                     stack = stack.Concat(new int[] { 1 }).ToArray();
                     idx += 1;
                     arrbrackets = arrbrackets.Concat(new String[] { "" }).ToArray();
+
+                    if (i != 0)
+                    {
+                        arrIdxOperations = arrIdxOperations.Concat(new char[] { text[i - 1] }).ToArray();
+                    }
+
                 }
-                else if (tx == ')')
+                else if (text[i] == ')')
                 {
                     if (stack.Length == 0)
                     {
@@ -257,17 +280,129 @@ namespace WebApplication1
                 }
             }
 
-            char[] charsToRemove = { '(', ')' };
+            string[] charsToRemove = { "(", ")" };
             string[] removeNoise = new string[] { };
-            string temp = "";
+            string[] arrSummaries = new string[] { };
+            string[] arrtemp = new string[] { };
+            bool frag = false;
+            int countSum = 0;
 
-            foreach (var st in arrbrackets)
+            for (int i = 0; i <= arrbrackets.Length - 1; i++)
             {
-                removeNoise = removeNoise.Concat(new String[] { st.TrimEnd(charsToRemove) }).ToArray();
+
+                if (i != 0)
+                {
+                    foreach (var c in charsToRemove)
+                    {
+                        arrbrackets[i] = arrbrackets[i].Replace(c, string.Empty);
+                    }
+                }
+            }
+
+            for (int i = 1; i <= arrbrackets.Length - 1; i++)
+            {
+                if (isOperator(arrbrackets[i][arrbrackets[i].Length - 1]) && !frag)
+                {
+                    frag = true;
+                    arrtemp = arrtemp.Concat(new string[] { arrbrackets[i] }).ToArray();
+                }
+                else if (frag)
+                {
+                    if (!isOperator(arrbrackets[i][arrbrackets[i].Length - 1]))
+                    {
+                        arrtemp = arrtemp.Concat(new string[] { arrbrackets[i] }).ToArray();
+                        arrSummaries = arrSummaries.Concat(new string[] { "x" }).ToArray();
+                        frag = false;
+                    }
+                }
+                else
+                {
+                    float[] results = Regex.Split(arrbrackets[i], @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+                    string[] operations = Regex.Split(arrbrackets[i], @"[0-9]+").ToArray();
+
+                    arrSummaries = arrSummaries.Concat(new string[] { countValue(operations, results).ToString() }).ToArray();
+                }
+           }
+
+
+            string[] arrtempSum = new string[] { };
+            if (arrtemp.Length != 0)
+            {
+                string st = "";
+                for (int i=arrtemp.Length-1; i>=0; i--)
+                {
+                    if (!isOperator(arrtemp[i][arrtemp[i].Length - 1]))
+                    {
+                        if (st!="")
+                        {
+                            arrtempSum = arrtempSum.Concat(new string[] {st}).ToArray();
+                        }
+
+                        st = "";
+
+                        float[] results = Regex.Split(arrtemp[i], @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+                        string[] operations = Regex.Split(arrtemp[i], @"[0-9]+").ToArray();
+
+                        st += countValue(operations, results).ToString();
+                    }
+                    else
+                    {
+                        st = arrtemp[i] + st;
+
+                        float[] results = Regex.Split(st, @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+                        string[] operations = Regex.Split(st, @"[0-9]+").ToArray();
+
+                        st = countValue(operations, results).ToString();
+
+                        if (i==0)
+                        {
+                            arrtempSum = arrtempSum.Concat(new string[] { st }).ToArray();
+                        }
+                    }
+                }
             }
 
 
-            int[] indexes = new int[] { };
+            int countSumTemp = 0;
+            for (int i=0; i<=arrSummaries.Length-1; i++)
+            {
+                if (arrSummaries[i] == "x")
+                {
+                    var theSummaryTemp = arrSummaries[i];
+                    var aStringBuilderTemp = new StringBuilder(theSummaryTemp);
+
+                    aStringBuilderTemp.Remove(i, 1);
+                    aStringBuilderTemp.Insert(i, arrtempSum[countSumTemp]);
+                    countSumTemp += 1;
+                    arrSummaries[i] = aStringBuilderTemp.ToString();
+                }
+            }
+
+
+            var theSummary = arrbrackets[0];
+            var aStringBuilder = new StringBuilder(theSummary);
+
+            for (int i=0; i<= aStringBuilder.Length-1; i++)
+            {
+                if (aStringBuilder[i] == '(')
+                {
+                    aStringBuilder.Remove(i, 1);
+                    aStringBuilder.Insert(i, arrSummaries[countSum]);
+                    countSum += 1;
+                }
+            }
+
+            float[] resultsSum = Regex.Split(aStringBuilder.ToString(), @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
+
+            string[] operationsSum = Regex.Split(aStringBuilder.ToString(), @"[0-9]+").ToArray();
+
+            result.Text = countValue(operationsSum, resultsSum).ToString();
+
+
+            /*int[] indexes = new int[] { };
             char[] operationsindex = new char[] { };
             for (int i = 0; i <= removeNoise.Length-1; i++)
             {
@@ -296,7 +431,28 @@ namespace WebApplication1
                     removeNoise[indexes[i]] += operationsindex[i];
                 }
             }
-            
+
+
+            for (int i = 0; i<=removeNoise.Length-1; i++)
+            {
+                if (isDoubleOperator(removeNoise[i]))
+                {
+                    removeNoise[i - 1] += removeNoise[i][removeNoise[i].Length - 1].ToString();
+                    removeNoise[i] = removeNoise[i].Remove(removeNoise[i].Length - 1);
+                }
+            }
+
+
+            if (isOperator(removeNoise[removeNoise.Length - 1][removeNoise[removeNoise.Length - 1].Length - 1]))
+            {
+                removeNoise[0] += removeNoise[removeNoise.Length - 1][removeNoise[removeNoise.Length - 1].Length - 1].ToString();
+                removeNoise[removeNoise.Length - 1] = removeNoise[removeNoise.Length - 1].Replace(removeNoise[removeNoise.Length - 1][removeNoise[removeNoise.Length - 1].Length - 1],' ');
+            }
+
+            foreach (var st in removeNoise)
+            {
+                System.Diagnostics.Debug.WriteLine("st" + st);
+            }
 
             float summary = 0;
             for (int i = removeNoise.Length-1; i >= 0; i--)
@@ -304,6 +460,7 @@ namespace WebApplication1
                 if (i != removeNoise.Length - 1)
                 {
                     removeNoise[i] += summary.ToString();
+                    System.Diagnostics.Debug.WriteLine("st remove noises" + removeNoise[i]);
                 }
 
                 float[] results = Regex.Split(removeNoise[i], @"-|\+|\*|\/").Select(x => Convert.ToSingle(x)).ToArray();
@@ -314,10 +471,11 @@ namespace WebApplication1
 
             }
 
-            result.Text = summary.ToString();
+            result.Text = summary.ToString();*/
 
 
         }
+
     }
 }
 
